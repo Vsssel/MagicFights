@@ -23,7 +23,7 @@ type Character struct {
 
 type Room struct {
 	Key      string
-	IsActive sql.NullBool
+	IsActive bool
 }
 
 type User struct {

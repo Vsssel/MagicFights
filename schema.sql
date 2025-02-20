@@ -1,6 +1,6 @@
 CREATE TABLE "rooms" (
     "key" VARCHAR PRIMARY KEY,
-    "is_active" BOOLEAN DEFAULT true
+    "is_active" BOOLEAN DEFAULT true NOT NULL
 );
 
 CREATE TABLE "users" (

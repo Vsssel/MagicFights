@@ -9,30 +9,16 @@ import (
 	"context"
 )
 
-const listCharacters = `-- name: ListCharacters :many
-SELECT id, name, description FROM characters
-ORDER BY name
+const createRoom = `-- name: CreateRoom :one
+
+INSERT INTO rooms (key)
+VALUES ($1)
+RETURNING key, is_active
 `
 
-func (q *Queries) ListCharacters(ctx context.Context) ([]Character, error) {
-	rows, err := q.db.QueryContext(ctx, listCharacters)
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-	var items []Character
-	for rows.Next() {
-		var i Character
-		if err := rows.Scan(&i.ID, &i.Name, &i.Description); err != nil {
-			return nil, err
-		}
-		items = append(items, i)
-	}
-	if err := rows.Close(); err != nil {
-		return nil, err
-	}
-	if err := rows.Err(); err != nil {
-		return nil, err
-	}
-	return items, nil
+func (q *Queries) CreateRoom(ctx context.Context, key string) (Room, error) {
+	row := q.db.QueryRowContext(ctx, createRoom, key)
+	var i Room
+	err := row.Scan(&i.Key, &i.IsActive)
+	return i, err
 }

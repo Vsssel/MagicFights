@@ -1,4 +1,5 @@
--- name: ListUsers :many
+-- name: CreateRoom :one
 
-SELECT * FROM users 
-ORDER BY username;
+INSERT INTO rooms (key)
+VALUES ($1)
+RETURNING *;
